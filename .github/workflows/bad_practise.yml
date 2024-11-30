@@ -3,10 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '*'
 
 jobs:
   test:
@@ -29,9 +26,8 @@ jobs:
           pip install -r requirements.txt  # Установка в глобальное окружение может вызвать конфликты
 
       # Плохая практика 4: Не очищать кэш между запусками
-      - name: Run tests
-        run: |
-          pytest tests/  # Нет кэширования, тесты могут работать медленно
+      - name: Skip tests
+        run: echo "Skipping tests"
 
       # Плохая практика 5: Не обрабатывать ошибки и не выводить их в лог
       - name: Build and deploy
