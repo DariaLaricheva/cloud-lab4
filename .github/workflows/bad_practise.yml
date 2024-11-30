@@ -12,7 +12,7 @@ jobs:
     steps:
       # Плохая практика 1: Не использовать конкретную версию действия
       - name: Checkout code
-        uses: actions/checkout
+        uses: actions/checkout@v2
 
       # Плохая практика 2: Не указывать версию Python явно
       - name: Set up Python
