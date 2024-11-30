@@ -14,12 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Плохая практика 2: Не указывать версию Python явно
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 'latest'  # Использование 'latest' может привести к неожиданным ошибкам
-
       # Плохая практика 3: Установка зависимостей без создания виртуального окружения
       - name: Install dependencies
         run: |
