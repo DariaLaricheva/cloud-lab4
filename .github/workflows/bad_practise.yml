@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Плохая практика 1: Не использовать конкретную версию действия
+      - name: Checkout code
+        uses: actions/checkout
+
+      # Плохая практика 2: Не указывать версию Python явно
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 'latest'  # Использование 'latest' может привести к неожиданным ошибкам
+
+      # Плохая практика 3: Установка зависимостей без создания виртуального окружения
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  # Установка в глобальное окружение может вызвать конфликты
+
+      # Плохая практика 4: Не очищать кэш между запусками
+      - name: Run tests
+        run: |
+          pytest tests/  # Нет кэширования, тесты могут работать медленно
+
+      # Плохая практика 5: Не обрабатывать ошибки и не выводить их в лог
+      - name: Build and deploy
+        run: |
+          echo "Building the project..."  # Отсутствие проверки успешности предыдущих шагов
+          ./build.sh  # Если этот шаг упадет, это не будет видно
+
