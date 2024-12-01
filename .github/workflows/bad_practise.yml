@@ -27,5 +27,5 @@ jobs:
       - name: Build and deploy
         run: |
           echo "Building the project..."  # Отсутствие проверки успешности предыдущих шагов
-          ./build.sh  # Если этот шаг упадет, это не будет видно
+          
 
