@@ -1,4 +1,4 @@
-name: CI
+name: ci/cd with bad practise
 # запуск на всех ветках
 on:
   push:

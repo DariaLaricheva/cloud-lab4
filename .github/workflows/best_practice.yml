@@ -11,7 +11,7 @@ on:
 env:
   PYTHON_VERSION: '3.9'
   VENV_DIR: '.venv'
-  REQUIREMENTS_PATH: '**/requirements.txt'
+  REQUIREMENTS_PATH: 'requirements.txt'
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: venv/lib/python*/site-packages
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
