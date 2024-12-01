@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+env:
+  PYTHON_VERSION: '3.9'
+  VENV_DIR: '.venv'
+  REQUIREMENTS_PATH: '**/requirements.txt'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,16 +24,17 @@ jobs:
 
       # Указываем конкретную версию Python
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       # Создаем виртуальное окружение и устанавливаем зависимости
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+            python -m venv ${{ env.VENV_DIR }}
+            source ${{ env.VENV_DIR }}/bin/activate
+            python -m pip install --upgrade pip
+            pip install -r ${{ env.REQUIREMENTS_PATH }}
 
       # Кэшируем зависимости для ускорения установки
       - name: Cache dependencies
@@ -51,13 +57,23 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      # Запускаем тесты с обработкой ошибок
+      - name: Create virtual environment
+        run: |
+          python -m venv ${{ env.VENV_DIR }}
+          source ${{ env.VENV_DIR }}/bin/activate
+
+      - name: Install dependencies
+        run: |
+          source ${{ env.VENV_DIR }}/bin/activate
+          python -m pip install --upgrade pip
+          pip install -r ${{ env.REQUIREMENTS_PATH }}
+
       - name: Run tests
         run: |
-          source venv/bin/activate  # Активируем виртуальное окружение перед запуском тестов
-          pytest tests/ || { echo 'Tests failed'; exit 1; }
+          source ${{ env.VENV_DIR }}/bin/activate
+          pytest
 
   deploy:
     runs-on: ubuntu-latest
