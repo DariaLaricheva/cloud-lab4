@@ -1,4 +1,4 @@
-name: ci/cd with best practise
+name: ci/cd with Best practise
 
 on:
   push:
