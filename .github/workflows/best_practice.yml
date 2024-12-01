@@ -77,21 +77,11 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test  # Зависимость от задания test
-
+    needs: test
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Указываем конкретную версию Python
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      # Проверяем успешность выполнения предыдущих шагов перед развертыванием
-      - name: Build and deploy
-        run: |
-          source venv/bin/activate  # Активируем виртуальное окружение перед сборкой
-          echo "Building the project..."  
+        - name: Fake deploy
+          run: |
+            echo "Deploy..."
+            echo "Code has been tested and passed all checks."
+            echo "Deployment simulation successful." 
           
