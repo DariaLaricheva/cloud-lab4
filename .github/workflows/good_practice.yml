@@ -84,6 +84,7 @@ jobs:
       # Проверяем успешность выполнения предыдущих шагов перед развертыванием
       - name: Build and deploy
         run: |
+          python -m venv venv
           source venv/bin/activate  # Активируем виртуальное окружение перед сборкой
           echo "Building the project..."  
           ./build.sh || { echo 'Build failed'; exit 1; }
