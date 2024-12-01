@@ -1,4 +1,4 @@
-name: ci/cd with Best practise
+name: CI/CD with good practise
 
 # тут определяем нужные веточки
 on:
