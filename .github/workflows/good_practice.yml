@@ -1,0 +1,90 @@
+name: ci/cd with Best practise
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Указываем конкретную версию действия
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Указываем конкретную версию Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # Создаем виртуальное окружение и устанавливаем зависимости
+      - name: Install dependencies
+        run: |
+            python -m venv venv
+            source venv/bin/activate
+            pip install -r requirements.txt
+
+      # Кэшируем зависимости для ускорения установки
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: venv/lib/python*/site-packages
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build  # Зависимость от задания build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Указываем конкретную версию Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+            source venv/bin/activate  # Активируем виртуальное окружение перед запуском тестов
+            pytest  || { echo 'Tests failed'; exit 1; }
+  
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test  # Зависимость от задания test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Указываем конкретную версию Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      # Проверяем успешность выполнения предыдущих шагов перед развертыванием
+      - name: Build and deploy
+        run: |
+          source venv/bin/activate  # Активируем виртуальное окружение перед сборкой
+          echo "Building the project..."  
+          ./build.sh || { echo 'Build failed'; exit 1; }
+          
