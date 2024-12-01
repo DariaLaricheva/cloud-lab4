@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  PYTHON_VERSION: '3.9'
+  PYTHON_VERSION: '3.11'
   VENV_DIR: '.venv'
   REQUIREMENTS_PATH: 'requirements.txt'
 
@@ -87,7 +87,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       # Проверяем успешность выполнения предыдущих шагов перед развертыванием
       - name: Build and deploy
